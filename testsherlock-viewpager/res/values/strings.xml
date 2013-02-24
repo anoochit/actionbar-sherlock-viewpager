@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">testsherlock-viewpager</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_fragment_video">FragmentVideo</string>
+    <string name="title_activity_fragment_twitter">FragmentTwitter</string>
+    
+    <string name="menu_share">Share...</string>
+    <string name="text_share_subject">Yanni World FanClub</string>
+    <string name="text_share_body">Yanni World FanClub https://play.google.com/store/apps/details?id=</string>
+
+</resources>
