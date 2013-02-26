@@ -12,6 +12,7 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
@@ -20,12 +21,14 @@ import com.google.ads.AdView;
 public class MainActivity extends SherlockFragmentActivity {
 
 	ActionBar mActionBar;
-	ViewPager mPager;
+	ViewPager mPager; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView(R.layout.activity_main); 
+		setProgressBarIndeterminateVisibility(false); 
 		
 		// Create the adView
 		AdView adView = new AdView(this, AdSize.BANNER, "a15116b3fb5c1da");
@@ -76,9 +79,9 @@ public class MainActivity extends SherlockFragmentActivity {
   
         Tab tab = mActionBar.newTab().setText("Video").setTabListener(tabListener); 
         mActionBar.addTab(tab);
-        tab = mActionBar.newTab().setText("Twitter").setTabListener(tabListener);
+        tab = mActionBar.newTab().setText("Concert").setTabListener(tabListener);
         mActionBar.addTab(tab);
-        tab = mActionBar.newTab().setText("About").setTabListener(tabListener); 
+        tab = mActionBar.newTab().setText("Twitter").setTabListener(tabListener); 
         mActionBar.addTab(tab);
 		
 	}

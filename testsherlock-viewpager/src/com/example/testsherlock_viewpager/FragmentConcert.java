@@ -20,14 +20,18 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,7 +39,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuInflater;
 
-public class FragmentTwitter extends SherlockFragment {
+public class FragmentConcert extends SherlockFragment {
 
 	Activity activity;
 
@@ -44,7 +48,7 @@ public class FragmentTwitter extends SherlockFragment {
 	private HashMap<String, String> map;
 	ListView listItem;
 
-	String url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22http%3A%2F%2Fsearch.twitter.com%2Fsearch.json%3Fq%3Dyanni%22%20%20&format=json&callback=";
+	String url = "http://query.yahooapis.com/v1/public/yql?q=select%20title%2Clink%20from%20feed%20where%20url%3D%22https%3A%2F%2Fgdata.youtube.com%2Ffeeds%2Fapi%2Fplaylists%2FF5FADE40A5446B22%3Fv%3D2%26max-results%3D50%22%20and%20link.rel%3D%22alternate%22&format=json&callback=";
 	 
 	@Override
 	public void onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu,
@@ -67,7 +71,7 @@ public class FragmentTwitter extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_twitter, container, false);
+		View view = inflater.inflate(R.layout.fragment_concert, container, false);
 		Log.d("VLOG", "onCreateView");
 		
 		// get xml data form yql
@@ -94,33 +98,38 @@ public class FragmentTwitter extends SherlockFragment {
 		protected Void doInBackground(String... params) {
 			// load json data
 			try {
-				
-				JSONObject json_data = new JSONObject(getJSONUrl(url));				
+				JSONObject json_data = new JSONObject(getJSONUrl(url));
 				JSONObject json_query = json_data.getJSONObject("query");
-				JSONObject json_results = json_query.getJSONObject("results");
-				JSONObject json_json_result = json_results.getJSONObject("json");				
-				JSONArray json_result = json_json_result.getJSONArray("results");				
-				Log.d("JSONW", String.valueOf(json_result.length()));
-				 
- 				for (int i = 0; i < json_result.length(); i++) {
- 					// parse json
- 					JSONObject c = json_result.getJSONObject(i);
- 					Log.d("JSONW", c.getString("profile_image_url").toString());
- 					Log.d("JSONW", c.getString("text").toString());
- 					 
- 					// put into hashmap
-					map = new HashMap<String, String>();
-					map.put("image_url", c.getString("profile_image_url").toString());
-					map.put("title", c.getString("text").toString());
-					MyArrList.add(map);
- 				}
+				JSONObject json_result = json_query.getJSONObject("results");
+				JSONArray json_entry = json_result.getJSONArray("entry");
+				Log.d("JSON", String.valueOf(json_entry.length()));
 
-				data_size = json_result.length();
+				for (int i = 0; i < json_entry.length(); i++) {
+					// parse json
+					JSONObject c = json_entry.getJSONObject(i);
+					Log.d("JSON", c.getString("title").toString());
+					Log.d("JSON", c.getJSONObject("link").getString("href").toString());
+					String link = c.getJSONObject("link").getString("href").toString();					
+					String[] fragments = link.split("&");
+					String[] videoid = fragments[0].split("=");
+					Log.d("JSON", videoid[1]);
+
+					String title_data = c.getString("title").toString();
+					String[] title_fragment = title_data.split("-");
+
+					// put into hashmap
+					map = new HashMap<String, String>();
+					map.put("title", title_fragment[1].toString().trim());
+					map.put("link", c.getJSONObject("link").getString("href"));
+					map.put("videoid", videoid[1]);
+					MyArrList.add(map);
+				}
+
+				data_size = json_entry.length();
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				Log.d("JSONW", e.getMessage());
 			}
 			return null;
 		}
@@ -149,8 +158,7 @@ public class FragmentTwitter extends SherlockFragment {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) { 
-				// Download OK
+			if (statusCode == 200) { // Download OK
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
 				BufferedReader reader = new BufferedReader(
@@ -170,20 +178,24 @@ public class FragmentTwitter extends SherlockFragment {
 		return str.toString();
 	}
 
-	public void ShowResult(ArrayList<HashMap<String, String>> myArrList) {
+	public void ShowResult(ArrayList<HashMap<String, String>> myArrList2) {
 		try {
-			listItem = (ListView) activity.findViewById(R.id.listItemTwitter);
-			LazyTwitterAdapter adapter = new LazyTwitterAdapter(activity,
-					myArrList);
+			listItem = (ListView) activity.findViewById(R.id.listItemConcert);
+			LazyAdapter adapter = new LazyAdapter(activity, MyArrList);
 			listItem.setAdapter(adapter);
-
+			listItem.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+					Intent fanPageIntent = new Intent(Intent.ACTION_VIEW);
+					fanPageIntent.setType("text/url");
+					fanPageIntent.setData(Uri.parse(MyArrList.get(arg2).get("link")));
+					startActivity(fanPageIntent);
+				}
+			});
 		} catch (Exception e) {
 			Toast.makeText(activity.getBaseContext(),
-					"Cannot connect to twitter server!", Toast.LENGTH_SHORT)
-					.show();
-
+					"Cannot connect to server!", Toast.LENGTH_SHORT).show();
 		}
-		
 	}
 
 	public boolean checkNetworkStatus() {

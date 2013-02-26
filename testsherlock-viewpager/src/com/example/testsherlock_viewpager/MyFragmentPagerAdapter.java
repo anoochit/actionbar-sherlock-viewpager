@@ -20,21 +20,21 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 		case 0:
 
 			FragmentVideo videoFragment = new FragmentVideo();
-			data.putInt("current_page", arg0 + 1);
+			data.putInt("current_page", arg0+1);
 			videoFragment.setArguments(data);
 			return videoFragment;
 
 		case 1:
-			FragmentTwitter twitterFragment = new FragmentTwitter();
-			data.putInt("current_page", arg0 + 1);
-			twitterFragment.setArguments(data);
-			return twitterFragment;
+			FragmentConcert concertFragment = new FragmentConcert();
+			data.putInt("current_page", arg0+1);
+			concertFragment.setArguments(data);
+			return concertFragment;
 		
 		case 2:
-			FragmentAbout aboutFragment = new FragmentAbout();
-			data.putInt("current_page", arg0 + 1);
-			aboutFragment.setArguments(data);
-			return aboutFragment;
+			FragmentTwitter twitterFragment = new FragmentTwitter();
+			data.putInt("current_page", arg0+1);
+			twitterFragment.setArguments(data);
+			return twitterFragment;
 		}
 		return null;
 	}
