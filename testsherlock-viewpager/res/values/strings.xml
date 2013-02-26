@@ -10,5 +10,6 @@
     <string name="menu_share">Share...</string>
     <string name="text_share_subject">Yanni World FanClub</string>
     <string name="text_share_body">Yanni World FanClub https://play.google.com/store/apps/details?id=</string>
+    <color name="gray">#555555</color>
 
 </resources>

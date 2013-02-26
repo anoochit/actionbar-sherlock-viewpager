@@ -35,8 +35,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		// Add the adView to it
 		layout.addView(adView);
 		// Initiate a generic request to load it with an ad
-		adView.loadAd(new AdRequest());
-
+		// adView.loadAd(new AdRequest());
+		adView.loadAd(new AdRequest().addTestDevice("EEEC201218AC425593883C4F37DAA5C9"));
+		
 		mActionBar = getSupportActionBar();
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mPager = (ViewPager) findViewById(R.id.pager); 
@@ -51,14 +52,10 @@ public class MainActivity extends SherlockFragmentActivity {
         };
         
          
-        mPager.setOnPageChangeListener(pageChangeListener);
-  
-        MyFragmentPagerAdapter fragmentPagerAdapter = new MyFragmentPagerAdapter(fm);
-  
-        mPager.setAdapter(fragmentPagerAdapter);
- 
-        mActionBar.setDisplayShowTitleEnabled(true);
-  
+        mPager.setOnPageChangeListener(pageChangeListener);  
+        MyFragmentPagerAdapter fragmentPagerAdapter = new MyFragmentPagerAdapter(fm);  
+        mPager.setAdapter(fragmentPagerAdapter); 
+        mActionBar.setDisplayShowTitleEnabled(true);  
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 
 			@Override
@@ -77,17 +74,11 @@ public class MainActivity extends SherlockFragmentActivity {
 			} 
         };
   
-        Tab tab = mActionBar.newTab()       
-                .setText("Video")
-                .setTabListener(tabListener); 
+        Tab tab = mActionBar.newTab().setText("Video").setTabListener(tabListener); 
         mActionBar.addTab(tab);
-        tab = mActionBar.newTab()
-                .setText("Twitter")
-                .setTabListener(tabListener);
+        tab = mActionBar.newTab().setText("Twitter").setTabListener(tabListener);
         mActionBar.addTab(tab);
-        tab = mActionBar.newTab()
-                .setText("About")
-                .setTabListener(tabListener); 
+        tab = mActionBar.newTab().setText("About").setTabListener(tabListener); 
         mActionBar.addTab(tab);
 		
 	}
