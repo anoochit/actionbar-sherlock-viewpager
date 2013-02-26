@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager; 
+import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -102,6 +102,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.text_share_body)	+ getApplicationContext().getPackageName());
 		return shareIntent;
 	}
+	
+	
  
 
 }

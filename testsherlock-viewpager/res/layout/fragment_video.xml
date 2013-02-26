@@ -5,7 +5,7 @@
     tools:context=".FragmentVideo" >
 
      <ListView
-        android:id="@+id/listView"
+        android:id="@+id/listItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
